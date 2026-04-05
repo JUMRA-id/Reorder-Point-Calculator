@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Stok & Reorder Point</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="brand-dots">
+      <span class="dot dot-green"></span>
+      <span class="dot dot-tan"></span>
+      <span class="dot dot-rose"></span>
+    </div>
+    <div class="brand-title">
+      <span class="title-line1">REORDER POINT</span>
+      <span class="title-line2">CALCULATOR</span>
+    </div>
+  </div>
+
+  <!-- KARTU KALKULATOR -->
+  <div class="calc-card">
+
+    <!-- LAYAR HASIL -->
+    <div class="screen" id="screen">
+      <p class="screen-label">REORDER POINT</p>
+      <p class="screen-value" id="screen-value">—</p>
+      <p class="screen-desc" id="screen-desc">Isi form di bawah lalu tekan hitung</p>
+    </div>
+
+    <!-- FORM INPUT -->
+    <div class="form-section">
+
+      <!-- Penjelasan singkat -->
+      <p class="form-hint">
+        <strong>Reorder Point</strong> = Titik stok di mana kamu harus order lagi
+        supaya barang tidak habis sebelum kiriman datang.
+      </p>
+
+      <!-- Stok sekarang -->
+      <div class="field-row">
+        <label>Stok sekarang</label>
+        <div class="input-wrap">
+          <input type="text" id="stok_sekarang" placeholder="0"
+                 oninput="formatRibuan(this)" inputmode="numeric">
+          <span class="input-suffix">pcs</span>
+        </div>
+      </div>
+
+      <!-- Penjualan per hari -->
+      <div class="field-row">
+        <label>Penjualan per hari</label>
+        <div class="input-wrap">
+          <input type="text" id="penjualan_per_hari" placeholder="0"
+                 oninput="formatRibuan(this)" inputmode="numeric">
+          <span class="input-suffix">pcs</span>
+        </div>
+      </div>
+
+      <!-- Waktu tunggu supplier -->
+      <div class="field-row">
+        <label>Waktu tunggu supplier</label>
+        <div class="input-wrap">
+          <input type="number" id="waktu_tunggu" placeholder="0" min="1">
+          <span class="input-suffix">hari</span>
+        </div>
+      </div>
+
+      <!-- Stok cadangan -->
+      <div class="field-row">
+        <label>Stok cadangan</label>
+        <div class="input-wrap">
+          <input type="text" id="stok_cadangan" placeholder="0"
+                 oninput="formatRibuan(this)" inputmode="numeric" value="0">
+          <span class="input-suffix">pcs</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- HASIL -->
+      <div id="hasil" style="display:none;">
+        <div class="result-row">
+          <span class="result-label">Reorder point</span>
+          <span class="result-val green" id="r-reorder">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Stok habis dalam</span>
+          <span class="result-val amber" id="r-hari-habis">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Order lagi</span>
+          <span class="result-val rose" id="r-hari-order">—</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Stok cadangan</span>
+          <span class="result-val green" id="r-cadangan">—</span>
+        </div>
+
+        <!-- VISUALISASI BAR STOK -->
+        <div class="stok-bar-wrap">
+          <div class="stok-bar-labels-top">
+            <span class="stok-label-kiri">Habis</span>
+            <span class="stok-label-tengah" id="bar-rop-label">ROP</span>
+            <span class="stok-label-kanan">Stok sekarang</span>
+          </div>
+          <div class="stok-bar">
+            <div class="stok-bar-merah" id="bar-merah"></div>
+            <div class="stok-bar-kuning" id="bar-kuning"></div>
+            <div class="stok-bar-hijau" id="bar-hijau"></div>
+          </div>
+          <div class="stok-bar-desc">
+            <span class="stok-desc-merah">Bahaya</span>
+            <span class="stok-desc-kuning">Waspada</span>
+            <span class="stok-desc-hijau">Aman</span>
+          </div>
+        </div>
+
+        <div class="status-badge" id="status-badge"></div>
+      </div>
+
+      <!-- TOMBOL -->
+      <div class="btn-row">
+        <button class="btn btn-hitung" onclick="hitung()">HITUNG</button>
+        <button class="btn btn-reset"  onclick="reset()">RESET</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ABOUT TOGGLE -->
+  <button class="about-toggle" onclick="toggleAbout()">
+    <span id="about-arrow">▾</span>&nbsp; Tentang website ini
+  </button>
+
+  <!-- ABOUT PANEL -->
+  <div class="about-panel" id="about-panel">
+    <div class="about-row">
+      <span class="about-key">Nama</span>
+      <span class="about-val">JUMRA</span>
+    </div>
+    <div class="about-row">
+      <span class="about-key">NIM</span>
+      <span class="about-val">250907501009</span>
+    </div>
+    <div class="about-row">
+      <span class="about-key">Jurusan</span>
+      <span class="about-val">Bisnis Digital</span>
+    </div>
+    <div class="about-divider"></div>
+    <!-- ✏️ Tulis ceritamu di sini -->
+    <p class="about-note">
+      Website ini dibuat untuk tugas mata kuliah Algortma dan Pemrograman. 
+  Kalkulator Reorder Point ini saya pilih karena relevan dengan
+  Bisnis Digital dan juga untuk membantu pelaku usaha online maupun usaha offline
+  mengetahui kapan waktu yang tepat untuk melakukan restok barang, sehingga 
+  tidak kehabisan stok maupun menumpuk modal di gudang.
+    </p>
+  </div>
+
+  <p class="footer-text">~ v1.0 ~</p>
+
+</div>
+
+<script>
+  // Format angka ribuan: 25000 → 25.000
+  function formatRibuan(input) {
+    let raw = input.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+    if (raw === '') { input.value = ''; return; }
+    input.value = parseInt(raw, 10).toLocaleString('id-ID');
+  }
+
+  function getRaw(id) {
+    const val = document.getElementById(id).value;
+    return parseFloat(val.replace(/\./g, '')) || 0;
+  }
+
+  // Update visualisasi bar stok
+  function updateBar(stok, rop) {
+    const maks      = Math.max(stok, rop * 2, 1);
+    const batas1    = (rop / maks) * 100;           // batas bahaya → waspada
+    const batas2    = ((rop * 1.5) / maks) * 100;  // batas waspada → aman
+    const posisi    = Math.min((stok / maks) * 100, 100);
+
+    // Lebar tiap segmen bar
+    document.getElementById('bar-merah').style.width  = batas1 + '%';
+    document.getElementById('bar-kuning').style.width = (batas2 - batas1) + '%';
+    document.getElementById('bar-hijau').style.width  = (100 - batas2) + '%';
+  }
+
+  // Hitung
+  async function hitung() {
+    const payload = {
+      stok_sekarang:      getRaw('stok_sekarang'),
+      penjualan_per_hari: getRaw('penjualan_per_hari'),
+      waktu_tunggu:       parseFloat(document.getElementById('waktu_tunggu').value) || 0,
+      stok_cadangan:      getRaw('stok_cadangan'),
+    };
+
+    try {
+      const res  = await fetch('/hitung', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.error) { alert(data.error); return; }
+
+      // Isi hasil
+      document.getElementById('r-reorder').textContent    = data.reorder_point;
+      document.getElementById('r-hari-habis').textContent = data.hari_habis;
+      document.getElementById('r-hari-order').textContent = data.hari_order;
+      document.getElementById('r-cadangan').textContent   = data.stok_cadangan;
+
+      // Update bar visualisasi
+      updateBar(payload.stok_sekarang, getRaw('stok_sekarang'));
+
+      // Status badge
+      const badge = document.getElementById('status-badge');
+      const icon  = { aman: '✓', waspada: '⚡', bahaya: '⚠' };
+      badge.textContent = icon[data.status] + '  ' + data.pesan;
+      badge.className   = 'status-badge badge-' + data.status;
+
+      // Tampilkan hasil & update layar
+      document.getElementById('hasil').style.display = 'block';
+      document.getElementById('screen-value').textContent = data.reorder_point;
+      document.getElementById('screen-desc').textContent  =
+        'order lagi saat stok tinggal segini';
+      document.getElementById('screen').className =
+        'screen screen-' + data.status;
+
+    } catch(e) { alert('Terjadi kesalahan, coba lagi.'); }
+  }
+
+  // Reset
+  function reset() {
+    ['stok_sekarang', 'penjualan_per_hari', 'waktu_tunggu'].forEach(id =>
+      document.getElementById(id).value = '');
+    document.getElementById('stok_cadangan').value = '0';
+    document.getElementById('hasil').style.display = 'none';
+    document.getElementById('screen-value').textContent = '—';
+    document.getElementById('screen-desc').textContent  =
+      'isi form di bawah lalu tekan hitung';
+    document.getElementById('screen').className = 'screen';
+  }
+
+  // Buka/tutup about
+  function toggleAbout() {
+    const panel = document.getElementById('about-panel');
+    const arrow = document.getElementById('about-arrow');
+    const isOpen = panel.classList.toggle('about-open');
+    arrow.textContent = isOpen ? '▴' : '▾';
+  }
+</script>
+
+</body>
+</html>
