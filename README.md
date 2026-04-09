@@ -47,7 +47,7 @@ Reorder Point (ROP) = (Penjualan per Hari × Waktu Tunggu Supplier) + Stok Cadan
 - Stok habis = 200 ÷ 50       = 4 hari lagi
 - Status     = 🔴 BAHAYA — stok sudah di bawah ROP, order sekarang!
 
-## Simulasi Penggunaaan
+# Simulasi Penggunaaan
 kita gunakan contoh perhitungan di atas misalnya:
 
 ![Tampilan Kalkulator](Screenshot%202026-04-09%20191846.png)
