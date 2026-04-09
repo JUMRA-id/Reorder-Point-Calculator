@@ -21,12 +21,14 @@ Kalkulator Reorder Point adalah aplikasi web yang membantu pelaku usaha mengetah
 Reorder Point (ROP) = (Penjualan per Hari × Waktu Tunggu Supplier) + Stok Cadangan
 
 #### Penjelasan Variabel
+
 - Penjualan per Hari = Rata-rata unit barang yang terjual setiap hari
 - Waktu Tunggu Supplier = Jumlah hari dari order sampai barang datang
 - Stok Cadangan = Buffer stok untuk mengantisipasi ketidakpastian
 - Reorder Point = Titik stok minimum saat inilah harus order
 
 #### Fitur
+
 - Hitung Reorder Point secara otomatis
 - Status stok: Aman, Waspada, atau Bahaya
 - Visualisasi bar kondisi stok
@@ -34,10 +36,12 @@ Reorder Point (ROP) = (Penjualan per Hari × Waktu Tunggu Supplier) + Stok Cadan
 - Estimasi kapan harus order ulang
 
 #### Contoh Perhitungan
+
 - Penjualan per hari  = 50 pcs
 - Waktu tunggu        = 7 hari
 - Stok cadangan       = 100 pcs
 - Stok sekarang       = 200 pcs
+- 
 ###### maka hasilnya:
 - ROP        = (50 × 7) + 100 = 450 pcs
 - Stok habis = 200 ÷ 50       = 4 hari lagi
@@ -45,7 +49,9 @@ Reorder Point (ROP) = (Penjualan per Hari × Waktu Tunggu Supplier) + Stok Cadan
 
 ## Simulasi Penggunaaan
 kita gunakan contoh perhitungan di atas misalnya:
+
 ![Tampilan Kalkulator](Screenshot%202026-04-09%20191846.png)
+
 ###### keterangan:
 - 450 pcs di layar atas = artinya ketika stok tinggal 450 pcs, saat itulah harus order
 - Reorder point: 450 pcs = hasil dari rumus (50×7)+100
@@ -60,10 +66,11 @@ kita gunakan contoh perhitungan di atas misalnya:
 - Jika  Stok > ROP × 1.5   = 🟢 AMAN     = Stok masih cukup
 
 
-## Penjelasan APP.PY 
+# Penjelasan APP.PY 
 Menggunakan Flask untuk membuat kalkulatornya karena Flask adalah framework Python yang ringan dan cocok untuk membuat web app sederhana. Dengan Flask, logika perhitungan Python bisa langsung diakses lewat browser
 
 ##### Baris 1
+
 <img width="803" height="34" alt="image" src="https://github.com/user-attachments/assets/add2c5ef-a941-4269-8b85-39a55fd6dfe4" />
 
 ##### Mengimpor komponen/alat-alat Flask yang dibutuhkan:
@@ -73,11 +80,13 @@ Menggunakan Flask untuk membuat kalkulatornya karena Flask adalah framework Pyth
 - jsonify = mengubah hasil Python menjadi format JSON/untuk kirim hasil balik ke web
 
 ##### Baris 3
+
 <img width="399" height="41" alt="image" src="https://github.com/user-attachments/assets/2f20d969-58b6-498c-b36b-d936041e4dbd" />
 
 Membuat aplikasi Flasknya . __name__ memberitahu Flask lokasi folder proyek agar bisa menemukan file template dan static.
 
 ##### Baris 5-7
+
 <img width="609" height="100" alt="image" src="https://github.com/user-attachments/assets/e8e2a463-82d4-40ea-b30e-525a1667caa6" />
 
 Mendaftarkan halaman utama (/). Ketika pengguna membuka localhost:5000, fungsi index() dipanggil dan menampilkan index.html.
@@ -85,6 +94,7 @@ Mendaftarkan halaman utama (/). Ketika pengguna membuka localhost:5000, fungsi i
 Tipe data: string (nama file HTML)
 
 ##### Baris 9-11
+
 <img width="573" height="94" alt="image" src="https://github.com/user-attachments/assets/0a7b99b2-1db5-43a5-980d-04ce64536f9f" />
 
 Mendaftarkan hitung yang hanya menerima metode POST. Dipanggil saat tombol HITUNG diklik. Data dikirim secara tersembunyi, bukan lewat URL.
@@ -93,6 +103,7 @@ data = request.get_json() =
 Membaca data JSON yang dikirim dari JavaScript di browser. Hasilnya berupa dictionary Python.
 
 ##### Baris 13-16
+
 <img width="927" height="126" alt="image" src="https://github.com/user-attachments/assets/33745211-7119-4eb9-8ac2-8712f5c7b9f9" />
 
 Mengambil masing-masing nilai dari data JSON dan mengkonversinya ke tipe float. Jika nilai tidak dikirim, default-nya adalah 0.
@@ -100,6 +111,7 @@ Mengambil masing-masing nilai dari data JSON dan mengkonversinya ke tipe float. 
 Tipe data: float
 
 ##### Baris 19-22
+
 <img width="1063" height="177" alt="image" src="https://github.com/user-attachments/assets/a5bdd1a7-c8aa-4fd0-ae5a-4d3055945951" />
 
 Validasi input. Jika penjualan per hari atau waktu tunggu bernilai 0 atau negatif, server langsung mengembalikan pesan error dengan kode HTTP 400 tanpa melakukan kalkulasi.
@@ -107,6 +119,7 @@ Validasi input. Jika penjualan per hari atau waktu tunggu bernilai 0 atau negati
 <img width="756" height="907" alt="image" src="https://github.com/user-attachments/assets/70e1156e-b5bc-4060-8514-09f948afa457" />
 
 ##### Baris 26-35
+
 <img width="1108" height="377" alt="image" src="https://github.com/user-attachments/assets/20162e57-4509-44be-9b6d-4728f58b1e77" />
 
 - Rumus utama Reorder Point. Hasil perkalian penjualan dan waktu tunggu ditambah stok cadangan.
@@ -116,6 +129,7 @@ Validasi input. Jika penjualan per hari atau waktu tunggu bernilai 0 atau negati
 Tipe data: float
 
 ##### Baris 37-43
+
 <img width="990" height="290" alt="image" src="https://github.com/user-attachments/assets/0d2c946a-7570-480d-8205-60378331da71" />
 
 Logika penentuan status stok berdasarkan perbandingan stok sekarang dengan ROP.
@@ -126,6 +140,7 @@ Logika penentuan status stok berdasarkan perbandingan stok sekarang dengan ROP.
 Tipe data: string
 
 ##### Baris 48-49
+
 <img width="743" height="99" alt="image" src="https://github.com/user-attachments/assets/01188fb7-ea72-42f5-98db-cf1666546669" />
 
 Fungsi pembantu untuk memformat angka ke gaya penulisan Indonesia. Contoh: 25000 menjadi 25.000 pcs.
@@ -133,17 +148,19 @@ Fungsi pembantu untuk memformat angka ke gaya penulisan Indonesia. Contoh: 25000
 Tipe data: string
 
 ##### Baris 51-58
+
 <img width="1210" height="253" alt="image" src="https://github.com/user-attachments/assets/3859f0f7-ceab-4334-a9a5-ae4fea682066" />
 
 Mengirimkan semua hasil perhitungan ke browser dalam format JSON.
 
 ##### Baris 60-61
+
 <img width="491" height="71" alt="image" src="https://github.com/user-attachments/assets/a145a731-7a9e-43bb-b313-e3104fbc740e" />
 
 Menjalankan server Flask secara lokal. debug=True membuat server otomatis restart saat kode diubah.
 
 
-## Penjelasan index.html
+# Penjelasan index.html
 
 ##### Baris 1-8
 <img width="1101" height="259" alt="image" src="https://github.com/user-attachments/assets/ca0ddc24-e516-4f9d-b60b-ac247edd25e5" />
@@ -197,15 +214,17 @@ Baris 127-134 = Dua tombol utama. onclick="hitung()" artinya saat diklik, jalank
 <img width="538" height="339" alt="image" src="https://github.com/user-attachments/assets/a2594496-c083-479f-adca-39c3afae19d6" />
 
 ##### Baris 136-168
+
 <img width="618" height="563" alt="image" src="https://github.com/user-attachments/assets/4260d400-3a87-4e89-8790-889e47c3f8b8" />
 <img width="518" height="198" alt="image" src="https://github.com/user-attachments/assets/47c86b6c-fb62-49a0-aa14-8413b61aa124" />
 
 untuk menampilkan sebuah panel toggle berisi informasi tentang seorang pembuat websitenya. 
-juga di baris 252 itu untuk Membuka/menutup panel "Tentang website ini". Ikon panah ikut berganti arah.
+juga di **baris 252** itu untuk Membuka/menutup panel "Tentang website ini". Ikon panah ikut berganti arah.
 
 <img width="602" height="358" alt="image" src="https://github.com/user-attachments/assets/0cacd998-d777-4da1-a7d0-39f0ab9592fc" />
 
-##### Baris 
+##### Baris 170-239
+
 <img width="501" height="804" alt="image" src="https://github.com/user-attachments/assets/0b3b0e12-8d6e-4f58-b394-21826f927ec6" />
 
 Baris 172 = Mengubah angka menjadi format ribuan Indonesia saat pengguna mengetik.
@@ -220,14 +239,16 @@ if (data.error) = jika server mengembalikan error, tampilkan alert
 Baris 183 = Menghitung dan mengatur lebar tiap zona bar secara proporsional berdasarkan nilai ROP.
 
 ##### Baris 241-250
+
 <img width="408" height="145" alt="image" src="https://github.com/user-attachments/assets/9fe0568e-7b00-4bbe-86b9-e99544241244" />
 
 Menghapus semua input dan menyembunyikan area hasil kembali ke kondisi awal.
 
 
-## Simulasi Uji Coba
+# Simulasi Uji Coba
 
 ### **1. Input Diisi angka 0 semua**
+
 <img width="809" height="811" alt="image" src="https://github.com/user-attachments/assets/c3a55776-5b63-475e-928d-a06b3f3f25ed" />
 
 Yang terjadi: Validasi di app.py menangkap kondisi ini sebelum kalkulasi dijalankan.
@@ -248,7 +269,7 @@ Misalnya variabel **Reorder Point** diganti menjadi **titik_order**:
 
 <img width="621" height="648" alt="image" src="https://github.com/user-attachments/assets/806b5416-eaf7-4d10-8ba7-6c6168eae595" />
 
-#### **simulasi menghitung ketika variabelnya diganti:**
+### simulasi menghitung ketika variabelnya diganti:
 
 **misal jika saya tidak mengganti semua variabelnya atau ada yang missing atau tidak konsisten mengisinya maka hasilnya akan seperti ini:**
 
@@ -281,7 +302,7 @@ python app.py
 #### 3. Buka browser
 ####  http://127.0.0.1:5000
 
-
+## TERIMA KASIH
 
 
 
