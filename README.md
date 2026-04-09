@@ -170,7 +170,7 @@ menampilkan layar kalkulator juga. perhitungannya saat mengisi output variabelny
 ##### Baris 86-134
 <img width="624" height="832" alt="image" src="https://github.com/user-attachments/assets/99286a8f-becd-4cb2-9a5f-9de2463274c6" />
 
-- Bagian HASIL
+- **Bagian HASIL**
   
 Baris 87 = Kotak hasil awalnya disembunyikan. display:none artinya tidak kelihatan dulu baru muncul setelah user klik HITUNG, diatur lewat JavaScript.
 
@@ -178,7 +178,7 @@ Baris 90 = Tempat menampilkan angka hasil ROP. Awalnya isi "—", nanti diisi an
 
 Baris 92-103 = Sama seperti di atas. masing-masing tempat untuk menampilkan: stok habis dalam berapa hari, kapan harus order, dan stok cadangan. Warnanya berbeda: hijau = positif, amber = peringatan, rose = perlu perhatian.
 
-- Bagian VISUALISASI BAR STOK
+- **Bagian VISUALISASI BAR STOK**
 
 Baris 106-110 = Label di atas bar. menunjukkan 3 titik: kiri = habis, tengah = titik ROP, kanan = posisi stok sekarang.
 
@@ -186,11 +186,11 @@ Baris 112-116 = Bar warna-warni yang dibagi 3 zona: merah = bahaya, kuning = was
 
 Baris 1171-122 = Label di bawah bar. keterangan tiap zona warna.
 
-- Bagian STATUS BADGE
+- **Bagian STATUS BADGE**
 
 Baris 124-125 = Kotak status yang muncul setelah hitung. isinya teks seperti "Stok aman" atau "Stok kritis!". Isi dan warnanya diubah JavaScript sesuai hasil perhitungan.
 
-- Bagian TOMBOL
+- **Bagian TOMBOL**
   
 Baris 127-134 = Dua tombol utama. onclick="hitung()" artinya saat diklik, jalankan fungsi hitung() di JavaScript. onclick="reset()" artinya jalankan fungsi reset() yang mengosongkan semua input dan menyembunyikan hasil.
 
@@ -227,25 +227,49 @@ Menghapus semua input dan menyembunyikan area hasil kembali ke kondisi awal.
 
 ## Simulasi Uji Coba
 
-#### 1. Input Diisi angka 0 semua
-
-<img width="714" height="748" alt="image" src="https://github.com/user-attachments/assets/60f9fdd6-20a4-4997-88dd-cfe59c23593d" />
+### **1. Input Diisi angka 0 semua**
+<img width="809" height="811" alt="image" src="https://github.com/user-attachments/assets/c3a55776-5b63-475e-928d-a06b3f3f25ed" />
 
 Yang terjadi: Validasi di app.py menangkap kondisi ini sebelum kalkulasi dijalankan.
 
-pythonif penjualan_per_hari <= 0:
-    return jsonify({"error": "Penjualan per hari harus lebih dari 0"}), 400
-if waktu_tunggu <= 0:
-    return jsonify({"error": "Waktu tunggu supplier harus lebih dari 0"}), 400
+<img width="643" height="107" alt="image" src="https://github.com/user-attachments/assets/4e640659-5c22-4b63-ba6d-3d3df9be0882" />
     
 Hasil: Browser menampilkan pop-up alert dengan pesan error. Kalkulasi tidak dijalankan.
 
-#### 2. Uji Coba Mengganti Nama Variabel
-Misalnya variabel reorder_point diganti menjadi titik_order:
+### **2. Uji Coba Mengganti Nama Variabel**
 
+Misalnya variabel **Reorder Point** diganti menjadi **titik_order**:
 
+###### Sebelum
 
+<img width="619" height="701" alt="image" src="https://github.com/user-attachments/assets/f083812f-803c-410d-a01c-a00363d9cdc4" />
 
+###### Sesudah
+
+<img width="621" height="648" alt="image" src="https://github.com/user-attachments/assets/806b5416-eaf7-4d10-8ba7-6c6168eae595" />
+
+#### **simulasi menghitung ketika variabelnya diganti:**
+
+**misal jika saya tidak mengganti semua variabelnya atau ada yang missing atau tidak konsisten mengisinya maka hasilnya akan seperti ini:**
+
+<img width="420" height="631" alt="image" src="https://github.com/user-attachments/assets/f343867f-fe3e-42f1-bf58-41b729cbcc68" />
+
+**keterangan:**
+
+angka pada hasil perhitungannya tidak muncul, karena masih ada variabel baris reorder point sebelumnya **(contoh pada baris 231 dibawah)** yang di dipanggil sehingga eror.
+
+<img width="641" height="424" alt="image" src="https://github.com/user-attachments/assets/889987f4-f9c5-40c7-82a1-48b8900379d1" />
+
+- nah, ketika saya sudah konsisten mengganti semua variabel dari **reorder point** ke **titik_order**, maka hasil kalkulatornya berjalan denagn baik, seperti gambar di bawah:
+
+<img width="408" height="645" alt="image" src="https://github.com/user-attachments/assets/ce86eaf5-05e2-4f98-ad27-4a279f4927a7" />
+
+**Contoh Yang terjadi:**
+
+- Diganti hanya di satu baris = aplikasi error karena variabel reorder_point masih dipanggil di baris lain
+- Diganti konsisten di semua baris = aplikasi tetap berjalan normal
+- Nama variabel boleh diganti asal konsisten di semua baris yang menggunakannya
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Cara menjalankan
 
 #### 1. Install Flask
