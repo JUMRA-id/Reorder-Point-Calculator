@@ -7,8 +7,6 @@ Mata Kuliah : Algoritma dan Pemrograman
 Kalkulator untuk menghitung kapan harus restok barang.
 
 ## Tampilan kalkulator
-![Tampilan Kalkulator](Screenshot_2026-04-08_194859.png)
-![Tampilan Kalkulator](Screenshot_2026-04-08_194839.png)
-
-
+![Tampilan Kalkulator](Screenshot%202026-04-08%20194839.png)
+![Tampilan About](Screenshot%202026-04-08%20194859.png)
 
