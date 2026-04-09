@@ -174,7 +174,7 @@ Menjalankan server Flask secara lokal. debug=True membuat server otomatis restar
 
 Bagian layar kalkulator mulai dari atas form atau judulnya sampai kartu kalkulatornya. 
 
-Awalnya menampilkan —. Setelah HITUNG diklik, JavaScript mengubah isinya dengan hasil ROP. ID digunakan JavaScript untuk menemukan dan mengupdate elemen ini. juga ada tampilan untuk kalkulatornya, layar hasil dan sedikit penjelasan.
+Awalnya menampilkan . Setelah HITUNG diklik, JavaScript mengubah isinya dengan hasil ROP. ID digunakan JavaScript untuk menemukan dan mengupdate elemen ini. juga ada tampilan untuk kalkulatornya, layar hasil dan sedikit penjelasan.
 
 <img width="564" height="305" alt="image" src="https://github.com/user-attachments/assets/1f177be2-ca6c-43ca-8040-6452069d602c" />
 
